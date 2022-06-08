@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Template to create a queue
+
+Parameters:
+  ContentBasedDeduplication: Boolean
+  DeduplicationScope: String
+  DelaySeconds: 
+    Description: "Delay in seconds for the queue to be empty before it can be deleted"
+    Type: Number
+    Default: "0"
+  FifoQueue:
+    Description: "If true, the queue will be an Amazon SQS FIFO queue. Amazon SQS FIFO queues are a first-in-first-out (FIFO) queue, meaning that the oldest message added to the queue is the first one to be retrieved. Amazon SQS standard queues are a last-in-first-out (LIFO) queue, meaning that the newest message added to the queue is the first one to be retrieved."
+    Type: Number
+  FifoThroughputLimit: String
+  KmsDataKeyReusePeriodSeconds: Integer
+  KmsMasterKeyId: 
+    Description: "KMS Master Key"
+    Type: String
+    Default: ''
+  MaximumMessageSize:
+    Description: "Maximum size of a message"
+    Type: Number
+    Default: 262144
+  MessageRetentionPeriod: Integer
+  QueueName:
+    Type: String
+    Description: Name Queue
+    Default: DemoStandardQueue
+  ReceiveMessageWaitTimeSeconds: Integer
+
+
+Resources:
+  MySourceQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      ContentBasedDeduplication: #Boolean
+      DeduplicationScope: String
+      DelaySeconds: Integer
+      FifoQueue: Boolean
+      FifoThroughputLimit: String
+      KmsDataKeyReusePeriodSeconds: Integer
+      KmsMasterKeyId: !Ref KmsMasterKeyId
+      MaximumMessageSize: !Ref MaximumMessageSize
+      MessageRetentionPeriod: Integer
+      QueueName: !Ref QueueName
+      ReceiveMessageWaitTimeSeconds: Integer
+      RedriveAllowPolicy: Json
+      RedrivePolicy: Json
+      SqsManagedSseEnabled: Boolean
+      Tags: 
+        - Tag
+      VisibilityTimeout: Integer    
+
+Outputs:
+  SourceQueueURL:
+    Description: "URL of source queue"
+    Value:
+      Ref: "MySourceQueue"
+  SourceQueueARN:
+    Description: "ARN of source queue"
+    Value:
+      Fn::GetAtt:
+        - "MySourceQueue"
+        - "Arn"
+  DeadLetterQueueURL:
+    Description: "URL of dead-letter queue"
+    Value:
+      Ref: "MyDeadLetterQueue"
+  DeadLetterQueueARN:
+    Description: "ARN of dead-letter queue"
+    Value:
+      Fn::GetAtt:
+        - "MyDeadLetterQueue"
+        - "Arn"

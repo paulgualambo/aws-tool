@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  DeliveryPolicy:
+    Description: "DeliveryPolicy"
+    Type: String
+  Endpoint:
+    Description: "Endpoint"
+    Type: String
+  FilterPolicy:
+    Description: "FilterPolicy"
+    Type: String
+  Protocol:
+    Description: "Protocol"
+    Type: String
+  RawMessageDelivery:
+    Description: "RawMessageDelivery"
+    Type: Number
+  RedrivePolicy:
+    Description: "RedrivePolicy"
+    Type: Number    
+  Region:
+    Description: "Region"
+    Type: String        
+  SubscriptionRoleArn:
+    Description: "SubscriptionRoleArn"
+    Type: String
+  TopicArn:
+    Description: "TopicArn"
+    Type: String          
+
+
+Resources:
+  EventStoreSubscription:
+    Type: AWS::SNS::Subscription
+    Properties: 
+      DeliveryPolicy: !Ref DeliveryPolicy
+      Endpoint: !Ref Endpoint
+      FilterPolicy: !Ref FilterPolicy
+      Protocol: !Ref Protocol
+      RawMessageDelivery: !Ref RawMessageDelivery
+      RedrivePolicy: !Ref RedrivePolicy
+      Region: !Ref Region
+      SubscriptionRoleArn: !Ref SubscriptionRoleArn
+      TopicArn: !Ref TopicArn
